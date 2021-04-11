@@ -74,7 +74,7 @@ function Welcome() {
                     </button>
                     <button type="button" className="play__now__btn" onClick={()=>{ cleanAll() }} > 
                         <p className="play__now__btn__sinhala">වෙන ක්‍රීඩකයෙක්</p>
-                        <p className="play__now__btn_english" >New player | விளையாடுவோம் </p>
+                        <p className="play__now__btn_english" >New player | புதிய வீரர் </p>
                     </button>
                     </div>
                 </>) : (

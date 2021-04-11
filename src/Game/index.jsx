@@ -2,14 +2,7 @@ import React, { Children, useEffect, useRef, useState } from 'react'
 import data from './data';
 import { useHistory } from "react-router";
 import fire from '../fire';
-import '../StyleSheets/Index.css'
-
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
+import '../StyleSheets/Index.css' 
 
 function Index() {
     const history = useHistory();
@@ -18,7 +11,7 @@ function Index() {
     const [localStorageData, setLocalStorageData] = useState();
     let elephentRun =  true
     let leftSpace = 0 
-    let  time = 3 
+    let  time = 6 
     let gameStarted =  false;
     let u_data;
     let t = false
@@ -180,7 +173,7 @@ function Index() {
                 `
                 clearInterval(refInterval)  
             }else{
-              countDown.innerText = `තව තප්පර   ${time}`  
+              countDown.innerText = `තව තප්පර   ${time} යි `  
             }
         }, 1000)
 
