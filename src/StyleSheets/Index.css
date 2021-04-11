@@ -20,11 +20,7 @@
     border-radius: 10px;
 }
 
-.count__down{
-    font-size: 2em;
-    font-weight: 600;
-    margin-bottom: 10%;
-} 
+
 
 .play__now__btn {
     margin-top: 10%;
@@ -58,24 +54,38 @@
     margin-top: 0px;
 }
 
+
 .final__greeting{
-    font-size: 2em;
-    font-weight: 600;
-    margin-bottom: 10%;
+    padding-top: 20px; 
+    height: 15vh;  
 }
 
 .final__greeting__small{
     font-size: 15px; 
-    padding-left: 120px;
-    margin-top: -30px;
+    padding-left: -10px;
+    margin-top: 0px;
     margin-bottom: 0px;
+    font-weight: 600;
 }
+
+.final__greeting__large{
+    font-size: 2em;
+    font-weight: 600;
+    padding-left: 30px;
+}
+
+.count__down{
+    padding-top: 20px;
+    font-size: 2em;
+    font-weight: 600; 
+    height: 15vh; 
+} 
 
 .countDown__small{
     font-size: 15px; 
     padding-left: 0%;
-    margin-top: -30px;
-    margin-bottom: 0px;
+    margin-top: 0px;
+    margin-bottom: 0px; 
 }
 
 .countDown___large{

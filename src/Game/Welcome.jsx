@@ -5,6 +5,8 @@ import { useHistory } from "react-router";
 import './../StyleSheets/Welcome.css'
 import { TextField } from '@material-ui/core'
 
+import fire from '../fire'
+
 
 function Welcome() {
     const history = useHistory(); 
@@ -16,41 +18,71 @@ function Welcome() {
         let res = JSON.parse( localStorage.getItem('userData') ) 
         console.log(res)
         setUserData( res ) 
-        if( res &&  res.started=== false ){ 
+        if( res &&  res.completed=== false ){ 
             history.push({ pathname: "/game" }) 
         }    
-    }, [])  
+    }, [])
+    
+    const getPlayerData = async (email) =>{
+            const ref = fire.database().ref();
+            let _data ;
+            const res = await ref.child(`/players/`).orderByChild('email').equalTo(email).once("value", function(snapshot) {
+                snapshot.forEach(function(data) {
+                    _data = data.val() ; 
+                });
+            })
+            return _data;
+        }
 
-    let toGame = () =>{   
-        localStorage.setItem("userData", JSON.stringify({  name , email , started: false  , completed: false  }));
+    let toGame = async () =>{   
+        const data = await getPlayerData(email)
+        console.log(data)
+        if( data ){
+         localStorage.setItem("userData", JSON.stringify({  name , email , completed: false , highestScore: data.score , lastScore : 0  }));   
+         if( data.name != name ) {
+
+         }
+        }else{
+            localStorage.setItem("userData", JSON.stringify({  name , email , completed: false , highestScore: 0 , lastScore : 0  })); 
+        }
+        
         history.push({ pathname: "/game" }) 
     }
 
     return (
         <div className="main">
-            <div>
-                <h4>Welcome page</h4>
+            <div className="welcome__greeting">
+                <p className="welcome__greeting__sinhala" >සාදරයෙන් පිලිගන්නවා ඩිජිටල් අලියට ඇහැ තැබීමේ තරගයට  </p>
+                <p className="welcome__greeting__english" >Welcome to Digital Aliyata Aha thabiima  </p>
+                <p className="welcome__greeting__tamil" >டிஜிட்டல் அலியாட அஹ தபீமக்கு  வரவேட்கிறோம் </p>
             </div> 
-            <div>
-                <TextField
+            <div className="input__container">
+                <TextField className="inputs"
                     onChange={(e)=>setName(e.target.value)}
                     required
                     id="outlined-required"
                     label="Your name"
                     variant="outlined"
                 /> 
-                <TextField
+            </div>
+            <div className="input__container">
+                <TextField className="inputs"
                     onChange={(e)=>setEmail(e.target.value)}
                     required
                     id="outlined-required"
-                    label="Your Email"
+                    label="Your office email"
                     variant="outlined"
                 />
-                <div>
-                    { (name && name.length > 0 &&  email && email.length > 0 ) ? ( <button onClick={()=>{ toGame() }} className="start__button">Go to Game</button> ) : null}
-                </div> 
             </div>
-                
+            <div>
+            { (name && name.length > 0 &&  email && email.length > 0 ) ? ( 
+                    <button type="button" className="play__now__btn" onClick={()=>{ toGame() }} > 
+                        <p className="play__now__btn__sinhala">එහෙනම් පටාන් ගමු </p>
+                        <p className="play__now__btn_english" >Let's play | விளையாடுவோம் </p>
+                    </button>
+                ) : null}
+            </div> 
+
         </div>
     )
 }

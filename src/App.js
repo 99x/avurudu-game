@@ -3,10 +3,6 @@ import Index from './Game/index.jsx'
 import Welcome from './Game/Welcome.jsx'
 import Header from './Game/Header.jsx'
 import Scorecard from './Game/Scorecard';
-
-import { Provider } from 'react-redux'
-import store from './redux/store'
-
 import Container from '@material-ui/core/Container';
 
 import {
@@ -23,8 +19,7 @@ function App() {
   }
 
   return (    
-    <>
-      <Provider store={ store }>
+    <> 
         <div >
           <Router>
             <Header />
@@ -42,8 +37,7 @@ function App() {
           <div className="footer" >
           </div>
           </Router>
-        </div>
-      </Provider>
+        </div> 
     </>
   );
 }

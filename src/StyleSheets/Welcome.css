@@ -5,12 +5,52 @@
     flex-direction: column;
 }
 
-.start__button{
-    border: none;
-    width: 200px;
-    border-radius: 3px;
-    margin-top: 1%;
-    padding: 10%;
+.play__now__btn {
+    margin-top: 10%;
+    padding-bottom: 30px;
+    padding-top: 10px; 
+    font-weight: 700;
+    font-size: large;
+    width: 300px; 
+    height: 50px;
+    outline: none; 
     background-color: #ffea00;
-    color: white
+    border: none;
+    border-radius: 25px;
+    box-shadow: 5px 5px #999;
+  }
+  
+  .play__now__btn:hover {
+      background-color: #f1e042;
+      color: white;
 }
+  
+  .play__now__btn:active {
+    background-color: #f1e042;
+    box-shadow: 0 5px #666;
+    transform: translateY(2px);
+    color: white;
+  }
+
+.inputs{
+    width: 400px;
+    background-color: #ffea00;
+    border-radius: 5px
+}
+
+.input__container{
+    margin-top: 10px;
+}
+
+.welcome__greeting{
+    margin-top: 10vh;
+    margin-bottom: 10vh;
+    text-align: center;
+    font-weight: 800;
+}
+
+.welcome__greeting__sinhala{
+    font-size: 30px;
+}
+
+

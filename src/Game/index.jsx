@@ -4,6 +4,13 @@ import { useHistory } from "react-router";
 import fire from '../fire';
 import '../StyleSheets/Index.css'
 
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+
 function Index() {
     const history = useHistory();
     const  canvasRef = useRef(null);
@@ -16,20 +23,20 @@ function Index() {
     let u_data;
     let t = false
     let playerslist = [];
-
+    let canvas;
+    let ctx;
     let guess_x = 0; let guess_y = 0;
 
     const [gameCompleted, setGameCompleted] = useState(false)
 
     let actual_x;
 
-    let canvas;
-    let ctx;
+    const [ score, setScore ] = useState(null) 
     
     useEffect(()=>{
         u_data =  JSON.parse( localStorage.getItem('userData') ) 
-        if(  u_data && u_data.started ){
-            setGameCompleted( u_data.started )
+        if(  u_data && u_data.completed ){
+            setGameCompleted( u_data.completed )
             elephentRun = false
         } 
         if(  u_data === null ) {
@@ -104,15 +111,14 @@ function Index() {
 
     const calculateScore = async (guessPoint) =>{
         let score = 800 - Math.abs(actual_x - guessPoint);
-        alert( score );
+        console.log( score );
+
+        setScore( score )
         let userData = localStorage.getItem("userData");
         const obj = JSON.parse(userData);
-        obj.score = score;
-        // check if user already played (check if user's email exist in db)
-        // const res = await getPlayerData(obj.email);
+        obj.score = score; 
         const ref = fire.database().ref();
-        let pData = undefined;
-        console.log('start fetch');
+        let pData = undefined; 
         const res = await ref.child(`/players/`).orderByChild('email').equalTo(obj.email).once("value", function(snapshot) {
             snapshot.forEach(function(data) {
                 console.log(`${data.val()} HI`);
@@ -121,19 +127,23 @@ function Index() {
         })
         console.log('end fetch', res);
         if (pData) {
-            
             // already played
             if (obj.score > pData.score) {
                 // update the DB
                 console.log('updating score', pData.score);
                 console.log('new score', obj.score);
                 updateScore(obj, pData.id);
+                localStorage.setItem( 'userData', JSON.stringify({  ...JSON.parse( localStorage.getItem('userData') ), completed: true, highestScore :obj.score , lastScore: obj.score   })  )
             }
+            localStorage.setItem( 'userData', JSON.stringify({  ...JSON.parse( localStorage.getItem('userData') ), completed: true , lastScore: obj.score   })  )
         } else {
             // new player
             // update the DB
-            addDataToFirebase(obj);
+            addDataToFirebase(obj); 
+            localStorage.setItem( 'userData', JSON.stringify({  ...JSON.parse( localStorage.getItem('userData') ), completed: true, highestScore :obj.score , lastScore: obj.score   })  )
         }
+
+        
     }
 
     const addDataToFirebase = (object) => {
@@ -143,20 +153,18 @@ function Index() {
     }
     const updateScore = (object, key) => {
         // fire.database().ref.child(`/players/${key}/score`).setValue(object.score);
-
         fire.database().ref(`/players/${key}`).set(object);
     }
     
 
     const getClickingCodinates = (e) =>{ 
-          if(gameStarted){
+        if(gameStarted){
             const canvas = canvasRef.current;
             var rect = canvas.getBoundingClientRect();
             guess_x = e.clientX - rect.left - 7 ;
-            guess_y =  e.clientY - rect.top  ;
+            guess_y =  e.clientY - rect.top - 7 ;
 
             setGameCompleted( true )
-            localStorage.setItem("userData", JSON.stringify({  ...u_data , started: true   }));
             gameStarted = false
             elephentRun =false 
             const { pageX,pageY } = e 
@@ -165,10 +173,7 @@ function Index() {
             setTimeout(()=>{
                 calculateScore(pageX)
             }, 500) 
-          }
-
-            
-         
+        }
     }
     const stopEle = ()=>{  
         let plyBtn = document.getElementById("playBtn")
@@ -177,7 +182,12 @@ function Index() {
             let countDown = document.getElementById("countDown")
             time --;
             if( time === 0 ){
-                countDown.innerText = "ගෙස් කරමු අලියාගේ ඇහැ තියන තැන "
+                countDown.innerHTML = `
+                    <p style='padding-left:80px'>ගෙස් කරමු අලියාගේ ඇහැ තියන තැන</p>
+                    <p style='font-size:15px'>
+                        Let's guess where the elephent Eye | யானையின் கண்ணை கண்டுப்பிடிப்போம் 
+                    </p>
+                `
                 clearInterval(refInterval)  
             }else{
               countDown.innerText = `තව තප්පර   ${time}`  
@@ -198,7 +208,7 @@ function Index() {
     const reloadPage = () =>{
         let userData = localStorage.getItem("userData");
         const obj = JSON.parse(userData);
-        localStorage.setItem("userData", JSON.stringify({  ...obj , started: false  , completed: false  }));
+        localStorage.setItem("userData", JSON.stringify({  ...obj , completed: false  }));
         window.location.reload()
     }
 
@@ -210,8 +220,10 @@ function Index() {
                     <>
                         <div>
                             <div className="final__greeting">
-                                <p>එහෙනම් සැමට සුභ අලුත් අවුරුද්දක් වේවා ! </p> 
-                                 <p className="final__greeting__small" >  So, Then Very Happy new year for All ! </p> 
+                                <p className="final__greeting__large">එහෙනම් සැමට සුභ අලුත් අවුරුද්දක් වේවා ! </p> 
+                                <p className="final__greeting__small" >  
+                                    So, Then Very Happy new year for All ! | இனிய புத்தாண்டு நல்வாழ்த்துக்கள் !
+                                </p> 
                             </div>
                         </div> 
                         
@@ -262,6 +274,7 @@ function Index() {
                     </>
                 ) : null
             }
+ 
         </div>
     )
 }
