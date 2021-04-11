@@ -16,7 +16,7 @@ function Welcome() {
         let res = JSON.parse( localStorage.getItem('userData') ) 
         console.log(res)
         setUserData( res ) 
-        if( res &&  res.played=== false ){ 
+        if( res &&  res.started=== false ){ 
             history.push({ pathname: "/game" }) 
         }    
     }, [])  

@@ -26,10 +26,11 @@ export default function Header() {
   const history = useHistory(); 
 
   const gotoHome = () => history.push({ pathname: "/" }) 
+  const gotoScorecard = () => history.push({ pathname: "/score" }) 
 
   return (
     <div className={classes.root}>
-      <AppBar position="static" style={{ background: '#ffea00', height:"100px", padding: "25px" }}>
+      <AppBar position="static" style={{ background: '#ffea00', height:"15vh", padding: "25px" }}>
         <Toolbar variant="dense">
           <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
             <MenuIcon />
@@ -37,7 +38,7 @@ export default function Header() {
           <Typography variant="h6" onClick={()=>gotoHome()}  >
               <strong>99x  අවුරුදු Game | අලියට ඇහැ තැබීම | அலியாட அஹ தபீம  </strong>
           </Typography>
-          <Button variant="contained" color="secondary"><Link href='/score' style={{ textDecoration: 'none', color: 'white', fontWeight: '600' }}>Scorecard</Link></Button>
+          <Button onClick={ ()=>gotoScorecard() } variant="contained" color="secondary"><span style={{ textDecoration: 'none', color: 'white', fontWeight: '600' }}>Scorecard</span></Button>
         </Toolbar>
       </AppBar>
     </div>

@@ -11,10 +11,11 @@ function Index() {
     const [localStorageData, setLocalStorageData] = useState();
     let elephentRun =  true
     let leftSpace = 0 
-    let  time = 6 
+    let  time = 3 
     let gameStarted =  false;
     let u_data;
     let t = false
+    let playerslist = [];
 
     let guess_x = 0; let guess_y = 0;
 
@@ -26,16 +27,14 @@ function Index() {
     let ctx;
     
     useEffect(()=>{
-        u_data =  JSON.parse( localStorage.getItem('userData') )
-            
-        if(  u_data && u_data.played ){
-            setGameCompleted( u_data.played )
+        u_data =  JSON.parse( localStorage.getItem('userData') ) 
+        if(  u_data && u_data.started ){
+            setGameCompleted( u_data.started )
             elephentRun = false
         } 
         if(  u_data === null ) {
             history.push({ pathname: "/" }) 
         }
-        
         canvas = canvasRef.current;
         ctx = canvas.getContext("2d");
         render() 
@@ -105,7 +104,7 @@ function Index() {
 
     const calculateScore = async (guessPoint) =>{
         let score = 800 - Math.abs(actual_x - guessPoint);
-        console.log( score );
+        alert( score );
         let userData = localStorage.getItem("userData");
         const obj = JSON.parse(userData);
         obj.score = score;
@@ -142,27 +141,25 @@ function Index() {
         // set() overwrites data at the specified location, including any child nodes.
         fire.database().ref(`/players/${child.key}/`).set(object);
     }
-
     const updateScore = (object, key) => {
         // fire.database().ref.child(`/players/${key}/score`).setValue(object.score);
 
         fire.database().ref(`/players/${key}`).set(object);
     }
     
+
     const getClickingCodinates = (e) =>{ 
-        if(gameStarted){
+          if(gameStarted){
             const canvas = canvasRef.current;
             var rect = canvas.getBoundingClientRect();
             guess_x = e.clientX - rect.left - 7 ;
             guess_y =  e.clientY - rect.top  ;
-            
+
             setGameCompleted( true )
-            localStorage.setItem("userData", JSON.stringify({  ...u_data , played: true   }));
+            localStorage.setItem("userData", JSON.stringify({  ...u_data , started: true   }));
             gameStarted = false
             elephentRun =false 
-            const { pageX,pageY } = e
-            guess_x = pageX
-            guess_y = pageY
+            const { pageX,pageY } = e 
 
             console.log({ pageX,pageY })
             setTimeout(()=>{
