@@ -5,24 +5,57 @@
 
 #players {
     font-family: Arial, Helvetica, sans-serif;
-    border-collapse: collapse;
+    border: 8px solid rgb(255, 255, 1); 
+    border-radius: 10px;
     width: 100%;
+    margin-top: 30px;
+    overflow: scroll;
+    border-collapse:collapse;
 }
 
 #players td, #players th {
     border: 1px solid #ddd;
     padding: 8px;
+    font-weight: bold;
 }
 
-#players tr:nth-child(even){background-color: #f2f2f2;}
+#players tr:nth-child(odd){background-color: rgb(240, 230, 87);}
+#players tr:nth-child(even){background-color: #f1de0d;}
 
-#players tr:hover {background-color: #ddd;}
+#players tr:hover {background-color: rgb(248, 242, 160); color: rgb(27, 27, 26) ;}
 
 #players th {
+  position: sticky;
+  top: 0;
   padding-top: 12px;
   padding-bottom: 12px;
   text-align: left;
   background-color: #ec4f4f;
   color: white;
+
 }
+
+
+#data-row {
+  color: rgb(132, 133, 74);
+}
+
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(transparent, #b9b70f);
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(transparent, rgb(158, 144, 15));
+}
+
+#players .currentPlayer {
+  color: rgb(255, 255, 255) ;
+  background-color:#ec4f4f !important;
+}
+
   
