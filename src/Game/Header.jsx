@@ -7,6 +7,7 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import Button from '@material-ui/core/Button';
 import Link from '@material-ui/core/Link';
+import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -22,6 +23,9 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Header() {
   const classes = useStyles();
+  const history = useHistory(); 
+
+  const gotoHome = () => history.push({ pathname: "/" }) 
 
   return (
     <div className={classes.root}>
@@ -30,8 +34,8 @@ export default function Header() {
           <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" className={classes.title}>
-              <Link href='/' style={{ textDecoration: 'none', color: 'white', fontWeight: '600' }}>99x  අවුරුදු ගේම් | අලියට ඇහැ තැබීම</Link>
+          <Typography variant="h6" onClick={()=>gotoHome()}  >
+              <strong>99x  අවුරුදු Game | අලියට ඇහැ තැබීම | அலியாட அஹ தபீம  </strong>
           </Typography>
           <Button variant="contained" color="secondary"><Link href='/score' style={{ textDecoration: 'none', color: 'white', fontWeight: '600' }}>Scorecard</Link></Button>
         </Toolbar>

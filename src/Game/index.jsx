@@ -150,7 +150,12 @@ function Index() {
     }
     
     const getClickingCodinates = (e) =>{ 
-        if(gameStarted){ 
+        if(gameStarted){
+            const canvas = canvasRef.current;
+            var rect = canvas.getBoundingClientRect();
+            guess_x = e.clientX - rect.left - 7 ;
+            guess_y =  e.clientY - rect.top  ;
+            
             setGameCompleted( true )
             localStorage.setItem("userData", JSON.stringify({  ...u_data , played: true   }));
             gameStarted = false
@@ -162,8 +167,11 @@ function Index() {
             console.log({ pageX,pageY })
             setTimeout(()=>{
                 calculateScore(pageX)
-            }, 2000)
-        }
+            }, 500) 
+          }
+
+            
+         
     }
     const stopEle = ()=>{  
         let plyBtn = document.getElementById("playBtn")
@@ -175,7 +183,7 @@ function Index() {
                 countDown.innerText = "ගෙස් කරමු අලියාගේ ඇහැ තියන තැන "
                 clearInterval(refInterval)  
             }else{
-              countDown.innerText = 'තව තප්පර ' + time.toString()  
+              countDown.innerText = `තව තප්පර   ${time}`  
             }
         }, 1000)
 
@@ -190,6 +198,13 @@ function Index() {
         },time * 1000)
     }
 
+    const reloadPage = () =>{
+        let userData = localStorage.getItem("userData");
+        const obj = JSON.parse(userData);
+        localStorage.setItem("userData", JSON.stringify({  ...obj , started: false  , completed: false  }));
+        window.location.reload()
+    }
+
     return (
         <div className="__main">  
              
@@ -197,13 +212,28 @@ function Index() {
                 gameCompleted ? (
                     <>
                         <div>
-                            <div className="final__greeting"> එහෙනම් සැමට සුභ අලුත් අවුරුද්දක් වේවා ! </div>
+                            <div className="final__greeting">
+                                <p>එහෙනම් සැමට සුභ අලුත් අවුරුද්දක් වේවා ! </p> 
+                                 <p className="final__greeting__small" >  So, Then Very Happy new year for All ! </p> 
+                            </div>
                         </div> 
+                        
                     </>
-                ) : (
+                ) : null
+            } 
+
+            
+
+            {
+                gameCompleted ? null : (
                     <> 
                         <div>
-                            <div id="countDown" className="count__down">තප්පර 5 යි හම්බෙන්නේ එබුවට පස්සේ</div> 
+                            <div id="countDown" className="count__down">
+                                <p className="countDown___large">තප්පර 5 යි හම්බෙන්නේ එබුවට පස්සේ</p>
+                                <p className="countDown__small">
+                                    You get 5 seconds after click the button | ஆரம்பித்த பின் உங்களுக்கு 5 நொடிகள் உண்டு 
+                                </p>
+                            </div> 
                         </div>
                     </>
                 )
@@ -214,11 +244,26 @@ function Index() {
             {
                 gameCompleted ? null : (
                     <>
-                    <div id="playBtn" >
-                        <button type="button" className="play__now__btn" onClick={ ()=>stopEle() }  > ඔබල පටන් ගමු </button>
-                    </div>
+                        <div id="playBtn" >
+                            <button type="button" className="play__now__btn" onClick={ ()=>stopEle() }  > 
+                                <p className="play__now__btn__sinhala"> ඔබල පටන් ගමු </p>
+                                <p className="play__now__btn_english" >Click to play | ஆரம்பிக்கலாமா</p>
+                            </button>
+                        </div>
                     </>
                 )
+            }
+            {
+                gameCompleted ? (
+                    <>
+                        <div  >
+                            <button type="button" className="play__now__btn" onClick={ ()=>reloadPage() }  > 
+                                <p className="play__now__btn__sinhala">අයෙ සෙල්ලම් කරමු ද  ?</p>
+                                <p className="play__now__btn_english" >Let's play again ?</p>
+                            </button>
+                        </div>
+                    </>
+                ) : null
             }
         </div>
     )

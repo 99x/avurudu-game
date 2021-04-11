@@ -25,16 +25,22 @@ function App() {
   return (    
     <>
       <Provider store={ store }>
-        <div className="App">
+        <div >
           <Router>
             <Header />
+            <div className="left__border" > </div>
+            <div className="App" >
             <Container maxWidth={ "xl" }>
-              <Switch>
-                <Route exact path="/" component={ Welcome } />
-                <Route path="/game"  component={ () => isLogin() ?  <Index /> :<Welcome /> } />
-                <Route exact path="/score" component={ Scorecard } />
-              </Switch>
-            </Container>
+                <Switch>
+                  <Route exact path="/" component={ Welcome } />
+                  <Route path="/game"  component={ () => isLogin() ?  <Index /> :<Welcome /> } />
+                  <Route exact path="/score" component={ Scorecard } />
+                </Switch>
+              </Container>
+            </div>
+          <div className="right__border" > </div>
+          <div className="footer" >
+          </div>
           </Router>
         </div>
       </Provider>

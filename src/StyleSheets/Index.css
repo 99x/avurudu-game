@@ -1,12 +1,8 @@
 .__main{
-    background-color: rgb(255, 88, 88);
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    height: 80vh;
-    color: white;
-    /* border: 1px solid black; */
 }
 
 .start__button{
@@ -36,8 +32,8 @@
     padding-top: 10px; 
     font-weight: 700;
     font-size: large;
-    width: 200px; 
-    height: 0px;
+    width: 300px; 
+    height: 50px;
     outline: none; 
     background-color: #ffea00;
     border: none;
@@ -66,4 +62,33 @@
     font-size: 2em;
     font-weight: 600;
     margin-bottom: 10%;
+}
+
+.final__greeting__small{
+    font-size: 15px; 
+    padding-left: 120px;
+    margin-top: -30px;
+    margin-bottom: 0px;
+}
+
+.countDown__small{
+    font-size: 15px; 
+    padding-left: 0%;
+    margin-top: -30px;
+    margin-bottom: 0px;
+}
+
+.countDown___large{
+    padding-left: 15%;
+}
+
+.play__now__btn_english{
+    padding: 0px;
+    margin: 0;
+    font-size: 12px;
+}
+
+.play__now__btn__sinhala{
+    padding: 0px;
+    margin: 0px;
 }

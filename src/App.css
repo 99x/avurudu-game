@@ -1,0 +1,28 @@
+.App{
+    background-color: rgb(255, 184, 126);
+    height: 78vh;
+    color: white;
+}
+
+.footer{
+    height: 45px;
+    background-color: #ffea00;
+}
+
+.left__border{
+    width: 100px;
+    height: 78vh;
+    background-color: #ffea00;
+    position: absolute;
+    background-image: url("https://res.cloudinary.com/dj8a0phpt/image/upload/v1618085654/99x%20awurudu%20game/fifcmuxn1h6ofmkkhjxn.png");
+}
+
+.right__border{
+    width: 100px;
+    height: 78vh;
+    background-color: #ffea00;
+    position: fixed;
+    top: 100px;
+    right: 0;
+    background-image: url("https://res.cloudinary.com/dj8a0phpt/image/upload/v1618085654/99x%20awurudu%20game/fifcmuxn1h6ofmkkhjxn.png");
+}
