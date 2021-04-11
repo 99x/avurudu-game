@@ -7,14 +7,14 @@ import '../StyleSheets/Index.css'
 function Index() {
     const history = useHistory();
     const  canvasRef = useRef(null);
-    const [list, setList] = useState({playerslist : []});
+    const [playerData, setPlayerData] = useState();
+    const [localStorageData, setLocalStorageData] = useState();
     let elephentRun =  true
     let leftSpace = 0 
-    let  time = 3 
+    let  time = 6 
     let gameStarted =  false;
     let u_data;
     let t = false
-    let playerslist = [];
 
     let guess_x = 0; let guess_y = 0;
 
@@ -26,14 +26,16 @@ function Index() {
     let ctx;
     
     useEffect(()=>{
-        u_data =  JSON.parse( localStorage.getItem('userData') ) 
-        if(  u_data && u_data.started ){
-            setGameCompleted( u_data.started )
+        u_data =  JSON.parse( localStorage.getItem('userData') )
+            
+        if(  u_data && u_data.played ){
+            setGameCompleted( u_data.played )
             elephentRun = false
         } 
         if(  u_data === null ) {
             history.push({ pathname: "/" }) 
         }
+        
         canvas = canvasRef.current;
         ctx = canvas.getContext("2d");
         render() 
@@ -90,28 +92,49 @@ function Index() {
         }
     }; 
 
-    const getPlayerData = () =>{
-        let players = [];
-        let obj;
-        fire.database().ref("players").on("value", snapshot => {
-            snapshot.forEach(snap => {
-                var obj = snap.val()
-                console.log(obj)
-                players.push(obj)
+    const getPlayerData = async (email) =>{
+        const ref = fire.database().ref();
+        const res = await ref.child(`/players/`).orderByChild('email').equalTo(email).once("value", function(snapshot) {
+            snapshot.forEach(function(data) {
+                console.log(`${data.val()} HI`);
+                setPlayerData({...data.val(), id: data.key});
             });
-          });
-          console.log(players.length)
+        })
+        return res;
     }
 
-    const calculateScore = (guessPoint) =>{
-        let score = Math.abs(actual_x - guessPoint);
-        console.log( 800 - score );
+    const calculateScore = async (guessPoint) =>{
+        let score = 800 - Math.abs(actual_x - guessPoint);
+        console.log( score );
         let userData = localStorage.getItem("userData");
         const obj = JSON.parse(userData);
         obj.score = score;
-        // check if user already started (check if user's email exist in db)
-        getPlayerData();
-        // addDataToFirebase(obj);
+        // check if user already played (check if user's email exist in db)
+        // const res = await getPlayerData(obj.email);
+        const ref = fire.database().ref();
+        let pData = undefined;
+        console.log('start fetch');
+        const res = await ref.child(`/players/`).orderByChild('email').equalTo(obj.email).once("value", function(snapshot) {
+            snapshot.forEach(function(data) {
+                console.log(`${data.val()} HI`);
+                pData = {...data.val(), id: data.key}
+            });
+        })
+        console.log('end fetch', res);
+        if (pData) {
+            
+            // already played
+            if (obj.score > pData.score) {
+                // update the DB
+                console.log('updating score', pData.score);
+                console.log('new score', obj.score);
+                updateScore(obj, pData.id);
+            }
+        } else {
+            // new player
+            // update the DB
+            addDataToFirebase(obj);
+        }
     }
 
     const addDataToFirebase = (object) => {
@@ -119,19 +142,27 @@ function Index() {
         // set() overwrites data at the specified location, including any child nodes.
         fire.database().ref(`/players/${child.key}/`).set(object);
     }
+
+    const updateScore = (object, key) => {
+        // fire.database().ref.child(`/players/${key}/score`).setValue(object.score);
+
+        fire.database().ref(`/players/${key}`).set(object);
+    }
     
     const getClickingCodinates = (e) =>{ 
-          if(gameStarted){
+        if(gameStarted){
             const canvas = canvasRef.current;
             var rect = canvas.getBoundingClientRect();
             guess_x = e.clientX - rect.left - 7 ;
             guess_y =  e.clientY - rect.top  ;
-
+            
             setGameCompleted( true )
-            localStorage.setItem("userData", JSON.stringify({  ...u_data , started: true   }));
+            localStorage.setItem("userData", JSON.stringify({  ...u_data , played: true   }));
             gameStarted = false
             elephentRun =false 
-            const { pageX,pageY } = e 
+            const { pageX,pageY } = e
+            guess_x = pageX
+            guess_y = pageY
 
             console.log({ pageX,pageY })
             setTimeout(()=>{
