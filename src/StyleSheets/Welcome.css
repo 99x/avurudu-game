@@ -1,0 +1,21 @@
+.main{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 80vh;
+    color: rgba(208, 255, 0, 0.952);
+    background-color: rgba(246, 20, 20, 0.719);
+    
+    /* border: 1px solid black; */
+}
+
+.start__button{
+    border: none;
+    width: 200px;
+    border-radius: 3px;
+    margin-top: 1%;
+    padding: 10%;
+    background-color: #ffea00;
+    color: white
+}

@@ -1,0 +1,69 @@
+.__main{
+    background-color: rgb(255, 88, 88);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 80vh;
+    color: white;
+    /* border: 1px solid black; */
+}
+
+.start__button{
+    border: none;
+    width: 200px;
+    border-radius: 3px;
+    margin-top: 1%;
+    padding: 10%;
+    background-color: #ffea00;
+    color: white
+}
+
+.canvas{
+    border: 8px groove yellow; 
+    border-radius: 10px;
+}
+
+.count__down{
+    font-size: 2em;
+    font-weight: 600;
+    margin-bottom: 10%;
+} 
+
+.play__now__btn {
+    margin-top: 10%;
+    padding-bottom: 30px;
+    padding-top: 10px; 
+    font-weight: 700;
+    font-size: large;
+    width: 200px; 
+    height: 0px;
+    outline: none; 
+    background-color: #ffea00;
+    border: none;
+    border-radius: 25px;
+    box-shadow: 5px 5px #999;
+  }
+  
+  .play__now__btn:hover {
+      background-color: #f1e042;
+      color: white;
+}
+  
+  .play__now__btn:active {
+    background-color: #f1e042;
+    box-shadow: 0 5px #666;
+    transform: translateY(2px);
+    color: white;
+  }
+
+.canvas__container{
+    padding: 0px;
+    margin-top: 0px;
+}
+
+.final__greeting{
+    font-size: 2em;
+    font-weight: 600;
+    margin-bottom: 10%;
+}
