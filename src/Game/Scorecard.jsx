@@ -98,9 +98,10 @@ function Scorecard(){
 
     return (
         <Container maxWidth="sm">
-            <Typography variant='h4' align ='center' color='textSecondary'>
-                Scorecard: The Top Ten!
-            </Typography>
+           <div className="scorecard__title"> 
+                <p className="scorecard__title_sinhal">ලකුණු පුවරුව - වඩිම ලකුණු 10</p>
+                <p className="scorecard__title__enlish_tamil">Top 10 leads | புள்ளிப்பட்டியல் - முதல் 10 புள்ளிகள்</p> 
+           </div>
             <div id= 'table-wrapper' style={{height: '70vh', overflowY: 'scroll'}}>
                 <table id = "players">
                     <thead>

@@ -18,25 +18,14 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     flexGrow: 1,
+    color:"black"
   },
 }));
 
 export default function Header() {
 
   const [user, setUser] = useState(null)
-
-  useEffect(()=>{ 
-    if(JSON.parse(localStorage.getItem('userData')) && JSON.parse(localStorage.getItem('userData')).completed   ){
-      setUser( null )
-      localStorage.removeItem('userData')
-    }
-  },[])
-
-
-  window.addEventListener("storage",(e) => {
-    console.log(e)
-  });
-
+ 
   useEffect(() => {
     const getUser =  setInterval(()=>{
       if( localStorage.getItem('userData')){
@@ -51,8 +40,6 @@ export default function Header() {
 
   const gotoHome = () =>{
     if(JSON.parse(localStorage.getItem('userData')) && JSON.parse(localStorage.getItem('userData')).completed){
-      setUser( null )
-      localStorage.removeItem('userData')
       history.push({ pathname: "/" })
     } else{
       history.push({ pathname: "/game" })
@@ -60,6 +47,7 @@ export default function Header() {
     
   } 
   const gotoScorecard = () => history.push({ pathname: "/score" })
+  const gotoAbout = () => history.push({ pathname: "/about" })
 
   return (
     <div className={classes.root}>
@@ -73,13 +61,14 @@ export default function Header() {
           </Typography> 
           {user ? (
             <div style={{ borderRight: '1px solid gray', marginInline: '10px', paddingRight: "10px", textAlign:"center" }}>
-              <p style={{ borderBottom : '1px solid gray', }} >  <strong>{user.name}</strong>  </p>
+              <p style={{ borderBottom : '1px solid gray', }} > Hi <strong>{user.name}</strong>  </p>
               <p style={{ color:"black" }} >
                Your HS : <strong>{user.highestScore}</strong> | Last Score : <strong>{user.lastScore}</strong>
               </p>
             </div>
           ) : null}
-          <Button onClick={ ()=>gotoScorecard() } variant="contained" color="secondary"><span style={{ textDecoration: 'none', color: 'white', fontWeight: '600' }}>Scorecard</span></Button>
+          <Button style={{ marginRight:'10px'}} onClick={ ()=>gotoScorecard() } variant="contained" color="secondary"><span style={{ textDecoration: 'none', color: 'white', fontWeight: '600' }}>Scorecard</span></Button>
+          <Button onClick={ ()=>gotoAbout() } variant="contained" color="secondary"><span style={{ textDecoration: 'none', color: 'white', fontWeight: '600' }}>About</span></Button>
         </Toolbar>
       </AppBar>
     </div>

@@ -76,10 +76,10 @@ function Index() {
         }else {
             if( direction === 'leftToRight' ){
                 actual_x =  x + leftSpace + 147 +26
-                console.log(x + leftSpace + 147 +26  , y) // 8 -> 18 | 15 -> 11 |  20 -> 6
+                 // 8 -> 18 | 15 -> 11 |  20 -> 6
             }else{
                 actual_x =  x + leftSpace + 147+ 28
-                console.log(x + leftSpace + 147+ 28 , y)  // 8 -> 8 | 15 -> 14 | 20 -> 19    
+                 // 8 -> 8 | 15 -> 14 | 20 -> 19    
             }
             
             const canvas = canvasRef.current;
@@ -87,14 +87,13 @@ function Index() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             ctx.drawImage(image, x, y , 200,200)
             
-            setTimeout(()=>{
-                console.log(guess_x, guess_y)
+            setTimeout(()=>{ 
                 ctx.arc(guess_x, guess_y, 6, 0, Math.PI * 2);
                 ctx.fillStyle = "black";
                 ctx.fill();
             },500)
              
-            console.log(direction)
+            
         }
     }; 
 
@@ -102,7 +101,6 @@ function Index() {
         const ref = fire.database().ref();
         const res = await ref.child(`/players/`).orderByChild('email').equalTo(email).once("value", function(snapshot) {
             snapshot.forEach(function(data) {
-                console.log(`${data.val()} HI`);
                 setPlayerData({...data.val(), id: data.key});
             });
         })
@@ -110,8 +108,7 @@ function Index() {
     }
 
     const calculateScore = async (guessPoint) =>{
-        let score = 800 - Math.abs(actual_x - guessPoint);
-        console.log( score );
+        let score = 800 - Math.abs(actual_x - guessPoint); 
 
         setScore( score )
         let userData = localStorage.getItem("userData");
@@ -120,18 +117,13 @@ function Index() {
         const ref = fire.database().ref();
         let pData = undefined; 
         const res = await ref.child(`/players/`).orderByChild('email').equalTo(obj.email).once("value", function(snapshot) {
-            snapshot.forEach(function(data) {
-                console.log(`${data.val()} HI`);
+            snapshot.forEach(function(data) { 
                 pData = {...data.val(), id: data.key}
             });
-        })
-        console.log('end fetch', res);
+        }) 
         if (pData) {
             // already played
-            if (obj.score > pData.score) {
-                // update the DB
-                console.log('updating score', pData.score);
-                console.log('new score', obj.score);
+            if (obj.score > pData.score) { 
                 updateScore(obj, pData.id);
                 localStorage.setItem( 'userData', JSON.stringify({  ...JSON.parse( localStorage.getItem('userData') ), completed: true, highestScore :obj.score , lastScore: obj.score   })  )
             }
@@ -167,9 +159,7 @@ function Index() {
             setGameCompleted( true )
             gameStarted = false
             elephentRun =false 
-            const { pageX,pageY } = e 
-
-            console.log({ pageX,pageY })
+            const { pageX,pageY } = e  
             setTimeout(()=>{
                 calculateScore(pageX)
             }, 500) 

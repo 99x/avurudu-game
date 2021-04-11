@@ -11,17 +11,26 @@ import fire from '../fire'
 function Welcome() {
     const history = useHistory(); 
     const [ name, setName ] = useState(null)
-    const [ email, setEmail ] = useState(null)
+    const [ email, setEmail ] = useState('')
     const [ userData, setUserData ] = useState(null)
 
+    const [veryfiedEmail, setVeryfiedEmail] = useState(true)
+
     useEffect(() => {
-        let res = JSON.parse( localStorage.getItem('userData') ) 
-        console.log(res)
+        let res = JSON.parse( localStorage.getItem('userData') )  
         setUserData( res ) 
         if( res &&  res.completed=== false ){ 
             history.push({ pathname: "/game" }) 
         }    
     }, [])
+
+    useEffect(()=>{
+        if(email.indexOf('@99x.io') === -1){
+            setVeryfiedEmail(false)
+        }else{
+            setVeryfiedEmail(true)
+        }
+    },[email])
     
     const getPlayerData = async (email) =>{
             const ref = fire.database().ref();
@@ -35,18 +44,18 @@ function Welcome() {
         }
 
     let toGame = async () =>{   
-        const data = await getPlayerData(email)
-        console.log(data)
+        const data = await getPlayerData(email) 
         if( data ){
          localStorage.setItem("userData", JSON.stringify({  name , email , completed: false , highestScore: data.score , lastScore : 0  }));   
-         if( data.name != name ) {
-
-         }
         }else{
             localStorage.setItem("userData", JSON.stringify({  name , email , completed: false , highestScore: 0 , lastScore : 0  })); 
         }
-        
         history.push({ pathname: "/game" }) 
+    }
+
+    const cleanAll = () => {    
+        localStorage.removeItem('userData')
+        window.location.reload()
     }
 
     return (
@@ -56,26 +65,47 @@ function Welcome() {
                 <p className="welcome__greeting__english" >Welcome to Digital Aliyata Aha thabiima  </p>
                 <p className="welcome__greeting__tamil" >டிஜிட்டல் அலியாட அஹ தபீமக்கு  வரவேட்கிறோம் </p>
             </div> 
-            <div className="input__container">
-                <TextField className="inputs"
-                    onChange={(e)=>setName(e.target.value)}
-                    required
-                    id="outlined-required"
-                    label="Your name"
-                    variant="outlined"
-                /> 
-            </div>
-            <div className="input__container">
-                <TextField className="inputs"
-                    onChange={(e)=>setEmail(e.target.value)}
-                    required
-                    id="outlined-required"
-                    label="Your office email"
-                    variant="outlined"
-                />
-            </div>
+            {
+                localStorage.getItem('userData') ? (<>
+                    <div>
+                    <button type="button" className="play__now__btn" onClick={()=> history.push({ pathname: "/game" }) } > 
+                        <p className="play__now__btn__sinhala">ආයේ සෙල්ලම් කරමු</p>
+                        <p className="play__now__btn_english" >Let's play again | விளையாடுவோம் </p>
+                    </button>
+                    <button type="button" className="play__now__btn" onClick={()=>{ cleanAll() }} > 
+                        <p className="play__now__btn__sinhala">වෙන ක්‍රීඩකයෙක්</p>
+                        <p className="play__now__btn_english" >New player | விளையாடுவோம் </p>
+                    </button>
+                    </div>
+                </>) : (
+                    <>
+                        <div className="input__container">
+                            <TextField className="inputs"
+                                onChange={(e)=>setName(e.target.value)}
+                                required
+                                id="outlined-required"
+                                label="Your name"
+                                variant="outlined"
+                            /> 
+                        </div>
+                        <div className="input__container">
+                            <TextField className="inputs"
+                                onChange={(e)=>setEmail(e.target.value)}
+                                required
+                                id="outlined-required"
+                                label="Your office email"
+                                variant="outlined"
+                            />
+                        </div>
+                        <div>
+                            { !veryfiedEmail ? <small style={{ color:'red', fontWeight:'700' }}>please enter valid company email</small> : null }
+                        </div>
+                    </>
+                )  
+            }
+            
             <div>
-            { (name && name.length > 0 &&  email && email.length > 0 ) ? ( 
+            { (name && name.length > 0 &&  veryfiedEmail ) ? ( 
                     <button type="button" className="play__now__btn" onClick={()=>{ toGame() }} > 
                         <p className="play__now__btn__sinhala">එහෙනම් පටාන් ගමු </p>
                         <p className="play__now__btn_english" >Let's play | விளையாடுவோம் </p>

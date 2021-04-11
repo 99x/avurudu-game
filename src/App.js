@@ -3,6 +3,7 @@ import Index from './Game/index.jsx'
 import Welcome from './Game/Welcome.jsx'
 import Header from './Game/Header.jsx'
 import Scorecard from './Game/Scorecard';
+import About from './Game/About';
 import Container from '@material-ui/core/Container';
 
 import {
@@ -30,6 +31,7 @@ function App() {
                   <Route exact path="/" component={ Welcome } />
                   <Route path="/game"  component={ () => isLogin() ?  <Index /> :<Welcome /> } />
                   <Route exact path="/score" component={ Scorecard } />
+                  <Route exact path="/about" component={ About } />
                 </Switch>
               </Container>
             </div>

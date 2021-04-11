@@ -58,4 +58,17 @@
   background-color:#ec4f4f !important;
 }
 
+.scorecard__title{
+  text-align: center;
+  font-weight: 800;
+}
+
+.scorecard__title_sinhal{
+  font-size: 30px;
+}
+
+.scorecard__title__enlish_tamil{
+  font-size: 15px;
+}
+
   
